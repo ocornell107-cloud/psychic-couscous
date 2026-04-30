@@ -31,14 +31,31 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-
 #spb{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--pu),#4facfe,#40D9A8);z-index:1001;width:0;pointer-events:none;transition:width .08s linear}
 
 /* ── LOADER ── */
-#ldr{position:fixed;inset:0;background:var(--black);z-index:9000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.25rem;transition:opacity .7s,visibility .7s}
+#ldr{position:fixed;inset:0;background:var(--black);z-index:9000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0;transition:opacity .8s cubic-bezier(.4,0,.2,1),visibility .8s}
 #ldr.out{opacity:0;visibility:hidden;pointer-events:none}
-.lw{font-family:var(--serif);font-size:clamp(30px,5vw,50px);color:#fff;letter-spacing:-1px;opacity:0;animation:fup .6s .15s forwards}
-.ls{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.14em;text-transform:uppercase;opacity:0;animation:fup .6s .4s forwards}
-.lb{width:140px;height:1.5px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
-.lf{height:100%;background:var(--pu);width:0;animation:lfill .95s .25s ease forwards}
 @keyframes fup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes lfill{to{width:100%}}
+
+/* Logo animation */
+.ldr-logo-wrap{position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:2rem}
+.ldr-logo-ring{position:absolute;width:96px;height:96px;border-radius:50%;border:1.5px solid rgba(91,79,217,.3);animation:lring 2.4s ease-in-out infinite}
+.ldr-logo-ring2{animation-delay:.8s;width:120px;height:120px;border-color:rgba(91,79,217,.15)}
+@keyframes lring{0%{transform:scale(.9);opacity:0}40%{opacity:1}100%{transform:scale(1.5);opacity:0}}
+.ldr-icon{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,var(--pu),#3BAEEE);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;animation:licon .6s .1s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes licon{from{transform:scale(.4) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.ldr-icon svg{width:32px;height:32px}
+
+/* Animated wordmark */
+.ldr-wordmark{font-family:var(--serif);font-size:clamp(26px,4vw,38px);color:#fff;letter-spacing:-.6px;opacity:0;animation:fup .6s .5s forwards;text-align:center;line-height:1.1}
+.ldr-sub{font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.18em;text-transform:uppercase;opacity:0;animation:fup .5s .75s forwards;text-align:center;margin-top:.4rem}
+.ldr-bar{width:120px;height:1.5px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin-top:2rem;opacity:0;animation:fup .4s .8s forwards}
+.ldr-fill{height:100%;background:linear-gradient(90deg,var(--pu),#3BAEEE);width:0;animation:lfill 1s .85s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes lfill{to{width:100%}}
+
+/* particles */
+.ldr-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.lp{position:absolute;border-radius:50%;animation:lpop ease-out forwards}
+@keyframes lpop{0%{transform:scale(0);opacity:.8}100%{transform:scale(1) translate(var(--tx),var(--ty));opacity:0}}
 
 /* ── NAV ── */
 nav{position:sticky;top:0;z-index:200;background:rgba(240,237,230,.9);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:62px;transition:box-shadow .3s}
@@ -459,15 +476,16 @@ footer{background:var(--black);border-top:1px solid rgba(255,255,255,.06);paddin
 @media(max-width:900px){
   nav{padding:0 1.25rem}
   .nl{display:none}
-  .hero{grid-template-columns:1fr;min-height:auto}
-  .h-left{padding:5rem 1.5rem 2rem;text-align:center;align-items:center}
-  .h-right{padding:0 1.5rem 4rem;justify-content:center}
+  .hero{grid-template-columns:1fr;min-height:auto;padding:5rem 1.25rem 0}
+  .h-left{padding:0 0 2rem;text-align:center;align-items:center}
+  .h-right{padding:0 0 4rem;justify-content:center}
   .hmock{max-width:420px}
-  .h1{font-size:clamp(44px,11vw,66px)}
-  .hsub{max-width:100%}
-  .hact{justify-content:center}
+  .h1{font-size:clamp(40px,10vw,60px);letter-spacing:-1px}
+  .hsub{max-width:100%;font-size:16px}
+  .hact{justify-content:center;gap:.75rem}
   .h-social-proof{justify-content:center}
-  .bento,.agg,.pg,.sst,.syswrap{grid-template-columns:1fr}
+  .bento,.agg,.sst,.syswrap{grid-template-columns:1fr}
+  .pg{grid-template-columns:1fr;max-width:400px;margin-left:auto;margin-right:auto}
   .tcarousel{-webkit-mask:none;mask:none}
   .ttrack{animation-duration:24s}
   .w2{grid-column:span 1}
@@ -475,24 +493,37 @@ footer{background:var(--black);border-top:1px solid rgba(255,255,255,.06);paddin
   .sec{padding:4rem 1.25rem}
   .shr{flex-direction:column}
   .sha{text-align:center;max-width:none}
-  footer{grid-template-columns:1fr;text-align:center}
+  footer{grid-template-columns:1fr;text-align:center;gap:1.25rem}
   .fc{text-align:center}
-  .fl{justify-content:center}
+  .fl{justify-content:center;gap:1rem;flex-wrap:wrap}
   .mbdy{grid-template-columns:1fr}
   .msid{display:none}
   .pc.ft{transform:scale(1)}
   .pc.ft:hover{transform:translateY(-4px)}
   .bmi{grid-template-columns:1fr;max-height:95vh}
-  .bml{border-radius:24px 24px 0 0;padding:1.75rem}
-  .bml-ti{font-size:22px}
+  .bml{border-radius:24px 24px 0 0;padding:1.5rem}
+  .bml-ti{font-size:20px}
   .bml-de,.bml-ds{display:none}
-  .bmr{border-radius:0 0 24px 24px}
+  .bmr{border-radius:0 0 24px 24px;padding:1.5rem;max-height:70vh;overflow-y:auto}
   .adi{border-radius:20px}
   .bfr{grid-template-columns:1fr}
   .slts{grid-template-columns:repeat(2,1fr)}
   .adts{grid-template-columns:1fr}
-  .best-line{flex-direction:column;text-align:center}
+  .best-line{flex-direction:column;text-align:center;gap:1.5rem}
   .p-roi-grid{grid-template-columns:1fr}
+  #chatbox{width:calc(100vw - 2rem)!important;max-width:380px}
+  #chatmod{padding:.75rem}
+  .sh{font-size:clamp(30px,7vw,46px)}
+  .sbo{font-size:15px}
+  .hk{font-size:10px}
+  .syswrap > div:last-child{display:none}
+  .agg{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto}
+  .agc{padding:2rem}
+  .agn{font-size:60px}
+  .cth{font-size:clamp(36px,8vw,56px)}
+  .ctasec{padding:5rem 1.5rem}
+  .bmsteps{flex-wrap:wrap;gap:4px}
+  .bmsind{font-size:11px;padding:5px 10px}
 }
 </style>
 </head>
@@ -504,33 +535,43 @@ footer{background:var(--black);border-top:1px solid rgba(255,255,255,.06);paddin
 
 <!-- LOADER -->
 <div id="ldr">
-  <div class="lw">Cornell Solutions</div>
-  <div class="ls">AI Front Office</div>
-  <div class="lb"><div class="lf"></div></div>
+  <div class="ldr-particles" id="ldrPart"></div>
+  <div class="ldr-wordmark">Cornell Solutions</div>
+  <div class="ldr-sub">AI Front Office</div>
+  <div class="ldr-bar"><div class="ldr-fill"></div></div>
 </div>
 
 <!-- BOOKING MODAL -->
 
 <!-- CHATBOT MODAL -->
 <div id="chatmod" style="position:fixed;inset:0;z-index:5500;display:flex;align-items:flex-end;justify-content:flex-end;padding:1.5rem;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;pointer-events:none">
-  <div id="chatbox" style="width:380px;max-height:600px;background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(26,24,20,.18),0 4px 16px rgba(26,24,20,.1);display:flex;flex-direction:column;overflow:hidden;transform:translateY(20px) scale(.97);transition:transform .35s cubic-bezier(.34,1.56,.64,1)">
-    <div style="background:var(--black);padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between">
+  <div id="chatbox" style="width:400px;max-height:620px;background:#fff;border-radius:24px;box-shadow:0 32px 80px rgba(26,24,20,.22),0 4px 16px rgba(26,24,20,.08);display:flex;flex-direction:column;overflow:hidden;transform:translateY(24px) scale(.96);transition:transform .4s cubic-bezier(.34,1.56,.64,1)">
+    <!-- Header -->
+    <div style="background:var(--black);padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
       <div style="display:flex;align-items:center;gap:10px">
-        <div style="width:32px;height:32px;border-radius:50%;background:var(--pul);display:flex;align-items:center;justify-content:center;font-size:14px">🤖</div>
+        <div style="width:36px;height:36px;border-radius:10px;background:var(--pul);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px">🤖</div>
         <div>
-          <div style="font-size:13px;font-weight:600;color:#fff">Cornell Solutions AI</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:#1D9E75;display:inline-block"></span>Online now</div>
+          <div style="font-size:13px;font-weight:600;color:#fff;letter-spacing:-.1px">Cornell Solutions</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:5px;margin-top:1px">
+            <span style="width:5px;height:5px;border-radius:50%;background:#1D9E75;display:inline-block;animation:lp 2s infinite"></span>AI assistant · online
+          </div>
         </div>
       </div>
-      <button onclick="closeChat()" style="background:rgba(255,255,255,.1);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center">✕</button>
+      <button onclick="closeChat()" style="background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.5);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.15)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.08)';this.style.color='rgba(255,255,255,.5)'">✕</button>
     </div>
-    <div id="chatmsgs" style="flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:10px;max-height:380px"></div>
-    <div style="padding:.75rem 1rem;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center">
-      <input id="chatinput" type="text" placeholder="Ask anything about Cornell Solutions..." style="flex:1;padding:9px 14px;border:1.5px solid var(--border);border-radius:100px;font-size:13px;font-family:var(--sans);outline:none;background:var(--bg);color:var(--ink);transition:border-color .2s" onkeydown="if(event.key==='Enter')sendChat()" onfocus="this.style.borderColor='var(--pu)'" onblur="this.style.borderColor='var(--border)'">
-      <button onclick="sendChat()" style="width:34px;height:34px;border-radius:50%;background:var(--pu);border:none;color:#fff;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform=''">↑</button>
+    <!-- Messages -->
+    <div id="chatmsgs" style="flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:12px;max-height:400px;scroll-behavior:smooth"></div>
+    <!-- Suggested prompts -->
+    <div id="chatSugg" style="padding:0 1rem .75rem;display:flex;flex-wrap:wrap;gap:6px"></div>
+    <!-- Input -->
+    <div style="padding:.75rem 1rem 1rem;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;flex-shrink:0;background:#fafaf8">
+      <input id="chatinput" type="text" placeholder="Ask me anything..." style="flex:1;padding:10px 16px;border:1.5px solid var(--border);border-radius:100px;font-size:13px;font-family:var(--sans);outline:none;background:#fff;color:var(--ink);transition:border-color .2s;line-height:1" onkeydown="if(event.key==='Enter')sendChat()" onfocus="this.style.borderColor='var(--pu)'" onblur="this.style.borderColor='var(--border)'">
+      <button onclick="sendChat()" style="width:36px;height:36px;border-radius:50%;background:var(--pu);border:none;color:#fff;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s" onmouseover="this.style.background='var(--black)'" onmouseout="this.style.background='var(--pu)'">↑</button>
     </div>
   </div>
 </div>
+
+
 
 <div id="bkm">
   <div class="bmo" onclick="closeBk()"></div>
@@ -625,7 +666,7 @@ footer{background:var(--black);border-top:1px solid rgba(255,255,255,.06);paddin
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#" class="nb">Cornell Solutions</a>
+  <a href="#" class="nb" id="navLogo" onclick="logoClic(event)">Cornell Solutions</a>
   <ul class="nl">
     <li><a href="#how-it-works">How it works</a></li>
     <li><a href="#features">Features</a></li>
@@ -722,7 +763,7 @@ footer{background:var(--black);border-top:1px solid rgba(255,255,255,.06);paddin
 <!-- BEST LINE CALLOUT -->
 <div class="best-line rv">
   <div class="bl-text">We don't sell software. <span style="color:var(--pu);font-style:italic">We build your system.</span></div>
-  <div class="bl-cta"><a href="#" class="bw" onclick="openBk(event)" style="background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.2)"><span>See it in action</span><span class="bwa">→</span></a></div>
+  <div class="bl-cta"><a href="#" class="bw" onclick="openBk(event)" style="background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.2);box-shadow:none"><span>See it in action</span><span class="bwa">→</span></a></div>
 </div>
 
 <!-- STATS -->
@@ -824,7 +865,7 @@ footer{background:var(--black);border-top:1px solid rgba(255,255,255,.06);paddin
 
 <!-- AGENTS -->
 <section class="sec bd" id="agents">
-  <div class="rv"><div class="kk"><div class="kln"></div>Meet your agents</div><h2 class="sh">Purpose-built for your industry.<br>Not a generic chatbot.</h2><p class="sbo" style="margin-top:.5rem">Each agent is trained specifically for their vertical. We build the right one for you — you never interact with a one-size-fits-all AI.</p></div>
+  <div class="rv" style="text-align:center"><div class="kk" style="justify-content:center"><div class="kln"></div>Meet your agents</div><h2 class="sh" style="margin:0 auto">Purpose-built for your industry.<br>Not a generic chatbot.</h2><p class="sbo" style="margin-top:.5rem">Each agent is trained specifically for their vertical. We build the right one for you — you never interact with a one-size-fits-all AI.</p></div>
   <div class="agg">
     <div class="agc aria rv d1">
       <div class="agwm">Aria</div>
@@ -877,9 +918,9 @@ footer{background:var(--black);border-top:1px solid rgba(255,255,255,.06);paddin
 
 <!-- PRICING -->
 <section class="sec wh bd" id="pricing">
-  <div class="rv">
-    <div class="kk"><div class="kln"></div>Investment</div>
-    <h2 class="sh">The math is straightforward.</h2>
+  <div class="rv" style="text-align:center">
+    <div class="kk" style="justify-content:center"><div class="kln"></div>Investment</div>
+    <h2 class="sh" style="margin:0 auto">The math is straightforward.</h2>
     <p class="sbo" style="margin-top:.5rem">Full setup, custom AI agent, and ongoing management included in every plan. No setup fees. No contracts. Cancel anytime.</p>
   </div>
 
@@ -940,7 +981,7 @@ footer{background:var(--black);border-top:1px solid rgba(255,255,255,.06);paddin
 
 <!-- FAQ -->
 <section class="sec bd" id="faq">
-  <div class="rv"><div class="kk"><div class="kln"></div>Common questions</div><h2 class="sh">Everything you want to know.</h2></div>
+  <div class="rv" style="text-align:center"><div class="kk" style="justify-content:center"><div class="kln"></div>Common questions</div><h2 class="sh" style="margin:0 auto">Everything you want to know.</h2></div>
   <div class="fql rv">
     <div class="fqi"><div class="fqq" onclick="fq(this)">Does the AI actually sound human?<div class="fqic">+</div></div><div class="fqa"><div class="fqai">Yes — and this is something we're obsessive about. We use premium voice synthesis that's warm, natural, and professional. Most callers don't realize they're speaking with an AI. They simply notice how fast and helpful the experience is. You'll hear it yourself in the free demo call before we ever ask you to commit.</div></div></div>
     <div class="fqi"><div class="fqq" onclick="fq(this)">What if a patient asks something the AI doesn't know?<div class="fqic">+</div></div><div class="fqa"><div class="fqai">We train your AI specifically on your practice — your services, policies, FAQs, pricing, and team. For anything genuinely outside scope, it gracefully takes a message and flags it for your team immediately. Nothing falls through the cracks.</div></div></div>
@@ -949,6 +990,11 @@ footer{background:var(--black);border-top:1px solid rgba(255,255,255,.06);paddin
     <div class="fqi"><div class="fqq" onclick="fq(this)">What's the difference between Aria and Nova?<div class="fqic">+</div></div><div class="fqa"><div class="fqai">Aria is purpose-built for dental practices — she understands cleanings, crowns, insurance verification, x-rays, and dental emergencies. Nova is built for med spas — she knows Botox consultations, filler pricing, treatment packages, and high-touch aesthetic client expectations. We always match you to the right one.</div></div></div>
     <div class="fqi"><div class="fqq" onclick="fq(this)">Do I need any technical knowledge?<div class="fqic">+</div></div><div class="fqa"><div class="fqai">None whatsoever. You fill out a form, join a 30-minute review call, and say go. Every technical piece — the phone number, integrations, workflows, AI training — is built and managed entirely by our team. Your only job is to run your practice.</div></div></div>
     <div class="fqi"><div class="fqq" onclick="fq(this)">Can I hear the AI before committing?<div class="fqic">+</div></div><div class="fqa"><div class="fqai">Absolutely. Book a free demo and we'll walk you through a live call simulation — before you ever pay a dollar. We want you to be genuinely excited about this, not just hopeful.</div></div></div>
+  </div>
+  <!-- Chat CTA under FAQ -->
+  <div class="rv" style="margin-top:2.5rem;text-align:center">
+    <p style="font-size:14px;color:var(--muted);margin-bottom:1rem">Still have questions? We're here.</p>
+    <button class="btno" onclick="openChat()" style="font-size:14px;padding:12px 28px">Chat with us →</button>
   </div>
 </section>
 
@@ -964,7 +1010,6 @@ footer{background:var(--black);border-top:1px solid rgba(255,255,255,.06);paddin
     <p class="ctsub">Every call that goes to voicemail is a patient who called your competitor next. Let's fix that — permanently.</p>
     <div class="cta">
       <a href="#" class="bw" onclick="openBk(event)"><span>Book a free demo</span><span class="bwa">→</span></a>
-      <button class="bgw" onclick="openChat()">Chat with us →</button>
     </div>
   </div>
 </section>
@@ -1003,8 +1048,20 @@ let bks=JSON.parse(bks_raw);
 let fd={},selD=null,selT=null,cY,cM;
 const now=new Date();cY=now.getFullYear();cM=now.getMonth();
 
-// ── LOADER ──
-window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('ldr').classList.add('out')},1200)});
+// ── LOADER PARTICLES ──
+window.addEventListener('load',()=>{
+  const part=document.getElementById('ldrPart');
+  const cols=['#5B4FD9','#3BAEEE','#40D9A8','#FFD166','#EA5BB8'];
+  for(let i=0;i<18;i++){
+    const p=document.createElement('div');
+    const sz=Math.random()*6+3;
+    const tx=(Math.random()-0.5)*300+'px';
+    const ty=(Math.random()-0.5)*300+'px';
+    p.style.cssText=`position:absolute;width:${sz}px;height:${sz}px;border-radius:50%;background:${cols[i%cols.length]};left:50%;top:50%;opacity:0;--tx:${tx};--ty:${ty};animation:lpop ${0.8+Math.random()*0.8}s ${0.3+Math.random()*0.6}s ease-out forwards`;
+    part.appendChild(p);
+  }
+  setTimeout(()=>{document.getElementById('ldr').classList.add('out')},1800);
+});
 
 // ── CURSOR ──
 const cur=document.getElementById('cur'),crr=document.getElementById('crr');
@@ -1198,27 +1255,51 @@ function renderSlots(){
 function selSlot(t){selT=t;renderSlots()}
 
 // ── CHATBOT ──
-const chatKnowledge=[
-  {k:['price','cost','how much','pricing','plan'],a:"Our plans start at $497/month for Starter (custom AI voice agent, 24/7 call answering, booking, reminders, reviews, live dashboard). Growth is $997/mo and includes no-show recovery, follow-up sequences, and more. Premier is $1,997/mo with multi-location support and a dedicated success manager. Would you like to book a free demo to see it in action?",cta:true},
-  {k:['demo','see it','trial','try'],a:"Absolutely! Book a free 15-minute demo call — we'll walk you through a live call simulation so you can hear exactly how your AI sounds. No commitment required.",cta:true},
-  {k:['sound','voice','human','robot','natural'],a:"Great question — and it's the one everyone asks. We use premium AI voice synthesis (ElevenLabs) that sounds warm, natural, and professional. Most callers don't realise they're speaking to an AI. You'll hear it yourself in the demo before you pay a cent.",cta:true},
-  {k:['contract','cancel','lock','commit','month'],a:"No contracts, no setup fees, no cancellation penalties. All plans are month-to-month. We earn your business every month because the system works — not because you're locked in."},
-  {k:['setup','long','onboard','start','live'],a:"We get you live in 3 business days. You fill out a short onboarding form, we build your entire system, you join a 30-minute review call, and we go live. Our team handles all the technical work."},
-  {k:['dental','dentist','aria'],a:"Aria is our AI agent built specifically for dental practices. She handles new patient calls, insurance questions, cleaning bookings, recall reminders, emergency triage, and post-visit follow-ups. She's trained on dental-specific terminology and workflows."},
-  {k:['spa','med spa','medspa','aesthetic','nova','botox'],a:"Nova is our AI agent for medical spas. She handles treatment inquiries, consultation booking, package follow-ups, VIP client care, and post-treatment check-ins. She understands the aesthetic client experience."},
-  {k:['no.show','noshow','missed','reschedule'],a:"Yes — no-show recovery is included in the Growth plan. When a patient misses an appointment, your AI automatically follows up, re-engages them, and reschedules. Most practices see a significant reduction in lost revenue from this alone."},
-  {k:['review','google','rating','star'],a:"Your AI sends a personalised follow-up after every visit asking happy patients to leave a Google review. It's fully automated. Most practices see their review count triple within a few months."},
-  {k:['calendar','schedule','booking','appointment','integrate'],a:"We integrate with the most widely-used practice management and scheduling systems. During onboarding our team handles the entire connection — your existing workflow doesn't change at all."},
-  {k:['what','how','work','explain','tell me'],a:"Cornell Solutions builds a fully custom AI front office for your dental practice or med spa. We set up an AI voice agent that answers every call 24/7, books appointments, sends reminders, collects Google reviews, and recovers no-shows — all automatically, managed by our team. Want to see it live?",cta:true},
+const chatSuggestions=[
+  ["How does it work?","What does it cost?","How fast is setup?"],
+  ["Does it sound human?","Can I hear it first?","What about no-shows?"],
+  ["Tell me about Aria","Tell me about Nova","No contracts?"]
 ];
+let suggRound=0;
+
+const chatKB=[
+  {k:['price','cost','how much','pricing','plan','$'],
+   fn:(msg)=>`Great question! Our plans start at **$497/month** for the Starter plan — that includes your custom AI voice agent, 24/7 call answering, real-time booking, SMS reminders, and Google review collection. Before I give you a full breakdown, can I ask — are you running a dental office, a med spa, or both?`,cta:false},
+  {k:['demo','see it','trial','try','hear','call','listen'],
+   fn:(msg)=>`Absolutely — the best way to experience it is to actually hear it. We can set up a live demo call right now so you can hear exactly how your AI will sound on the phone. Want to request a live call, or book a 15-min walkthrough instead?`,cta:true},
+  {k:['sound','voice','human','robot','natural','realistic'],
+   fn:(msg)=>`This is the question everyone asks — and it's a fair one. We use premium voice synthesis that's warm, natural, and professional. The key is in the training: we spend time making sure your AI speaks exactly like your practice would. Most callers simply notice how fast and responsive the experience is. Would you like to hear it yourself on a live demo call?`,cta:true},
+  {k:['contract','cancel','lock','commit','month','fee'],
+   fn:(msg)=>`No contracts, no setup fees, no cancellation penalties — ever. All plans are month-to-month. We're confident the system works, so we don't need to lock you in. Are there any other concerns I can help address?`},
+  {k:['setup','long','onboard','start','live','days','fast','quick'],
+   fn:(msg)=>`We get practices live in **3 business days**. You fill out a short form (15 min), our team builds your complete custom system, and you join one review call before we go live. Everything technical is handled by us. What type of practice are you setting up for?`},
+  {k:['dental','dentist','aria','teeth','cleaning'],
+   fn:(msg)=>`Aria is our AI built specifically for dental offices. She handles new patient intake, insurance questions, appointment booking, recall reminders, emergency triage, and post-visit follow-ups — all trained on dental workflows. Aria currently handles calls for practices across the US. Would you like to hear what she sounds like?`,cta:true},
+  {k:['spa','med spa','medspa','aesthetic','nova','botox','filler','laser'],
+   fn:(msg)=>`Nova is our AI concierge for medical spas. She understands the aesthetic client experience — treatment inquiries, consultation booking, VIP follow-ups, package questions, and post-treatment check-ins. She's designed to feel premium and personal. Want me to walk you through what Nova can do for your spa?`,cta:true},
+  {k:['no.show','noshow','missed','reschedule','missed appointment'],
+   fn:(msg)=>`No-show recovery is one of the highest-ROI features we offer. When a patient misses an appointment, your AI automatically follows up, re-engages them, and reschedules — without your team lifting a finger. Most practices see their no-show rate drop significantly within the first month. Is this something you're currently struggling with?`},
+  {k:['review','google','rating','star','reputation'],
+   fn:(msg)=>`After every visit, your AI sends a personalised follow-up asking happy patients to leave a Google review. It's fully automated. We've seen practices go from under 50 reviews to over 200 in just a few months. How are your Google reviews looking right now?`},
+  {k:['calendar','schedule','booking','appointment','integrate','software','system'],
+   fn:(msg)=>`We integrate with the most widely-used practice management and scheduling systems — your workflow doesn't change at all. Our team handles the entire technical connection during onboarding. Which software are you currently using for scheduling?`},
+  {k:['what','how','work','explain','tell me','overview'],
+   fn:(msg)=>`Happy to explain! Cornell Solutions builds a **fully custom AI front office** for your practice. Here's what that means: our team sets up an AI voice agent that answers every call 24/7, books appointments directly into your calendar, sends SMS reminders, collects Google reviews, and recovers no-shows — all automatically. You fill out a form, we build it, and you're live in 3 days. What type of practice do you have?`,cta:true},
+];
+
 let chatHistory=[];
+let chatContext={practiceType:null,askedAbout:[]};
+
 function openChat(){
   const m=document.getElementById('chatmod');
   const b=document.getElementById('chatbox');
   m.style.opacity='1';m.style.visibility='visible';m.style.pointerEvents='auto';
   b.style.transform='translateY(0) scale(1)';
   if(!chatHistory.length){
-    setTimeout(()=>addBotMsg("Hi! 👋 I'm the Cornell Solutions AI assistant. I can answer any questions about how our system works, pricing, or what to expect from a demo. What would you like to know?",true),400);
+    setTimeout(()=>{
+      addBotMsg("Hi there 👋 I'm the Cornell Solutions assistant. I can answer questions about how our AI system works, pricing, or what to expect from a demo. What's on your mind?");
+      showSuggestions(chatSuggestions[0]);
+    },350);
   }
   document.getElementById('chatinput').focus();
 }
@@ -1226,26 +1307,38 @@ function closeChat(){
   const m=document.getElementById('chatmod');
   const b=document.getElementById('chatbox');
   m.style.opacity='0';m.style.visibility='hidden';m.style.pointerEvents='none';
-  b.style.transform='translateY(20px) scale(.97)';
+  b.style.transform='translateY(24px) scale(.96)';
+}
+function showSuggestions(opts){
+  const sg=document.getElementById('chatSugg');
+  sg.innerHTML=opts.map(o=>`<button onclick="useQuickReply('${o}')" style="padding:6px 14px;border:1.5px solid var(--border);border-radius:100px;font-size:12px;font-family:var(--sans);color:var(--ink);background:#fff;cursor:pointer;transition:all .2s;white-space:nowrap" onmouseover="this.style.borderColor='var(--pu)';this.style.color='var(--pu)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--ink)'">${o}</button>`).join('');
+}
+function useQuickReply(text){
+  document.getElementById('chatSugg').innerHTML='';
+  document.getElementById('chatinput').value=text;
+  sendChat();
 }
 function addBotMsg(text,showCTA){
   const msgs=document.getElementById('chatmsgs');
   const d=document.createElement('div');
-  d.style.cssText='display:flex;gap:8px;align-items:flex-start';
-  const av=document.createElement('div');
-  av.style.cssText='width:26px;height:26px;border-radius:50%;background:var(--pul);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:2px';
-  av.textContent='🤖';
+  d.style.cssText='display:flex;gap:9px;align-items:flex-start;animation:fup .35s ease both';
+  const av2=document.createElement('div');
+  av2.style.cssText='width:30px;height:30px;border-radius:50%;background:var(--pul);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:1px';
+  av2.textContent='🤖';
   const bubble=document.createElement('div');
-  bubble.style.cssText='background:var(--bg);border:1px solid var(--border);border-radius:14px 14px 14px 4px;padding:10px 14px;font-size:13px;line-height:1.55;color:var(--ink);max-width:85%';
-  bubble.textContent=text;
-  d.appendChild(av);d.appendChild(bubble); // textContent auto-escapes
+  bubble.style.cssText='background:var(--bg);border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:11px 15px;font-size:13px;line-height:1.6;color:var(--ink);max-width:88%';
+  // Parse **bold**
+  const formatted=text.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  bubble.innerHTML=formatted;
+  d.appendChild(av2);d.appendChild(bubble);
   if(showCTA){
-    const btn=document.createElement('button');
-    btn.textContent='Book a free demo →';
-    btn.style.cssText='display:block;margin-top:8px;padding:7px 16px;background:var(--pu);color:#fff;border:none;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans)';
-    btn.onclick=()=>{closeChat();openBk(null)};
-    bubble.appendChild(document.createElement('br'));
-    bubble.appendChild(btn);
+    const wrap=document.createElement('div');
+    wrap.style.cssText='display:flex;gap:7px;margin-top:9px;flex-wrap:wrap';
+    const b2=document.createElement('button');
+    b2.textContent='Book a free demo →';
+    b2.style.cssText='padding:7px 15px;background:var(--pu);color:#fff;border:none;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:all .2s';
+    b2.onclick=()=>{closeChat();openBk(null)};
+    wrap.appendChild(b2);bubble.appendChild(wrap);
   }
   msgs.appendChild(d);
   msgs.scrollTop=msgs.scrollHeight;
@@ -1254,32 +1347,51 @@ function addBotMsg(text,showCTA){
 function addUserMsg(text){
   const msgs=document.getElementById('chatmsgs');
   const d=document.createElement('div');
-  d.style.cssText='display:flex;justify-content:flex-end';
+  d.style.cssText='display:flex;justify-content:flex-end;animation:fup .25s ease both';
   const bubble=document.createElement('div');
-  bubble.style.cssText='background:var(--pu);color:#fff;border-radius:14px 14px 4px 14px;padding:10px 14px;font-size:13px;line-height:1.55;max-width:85%';
-  bubble.textContent=text; // safe — no innerHTML
+  bubble.style.cssText='background:var(--pu);color:#fff;border-radius:16px 16px 4px 16px;padding:11px 15px;font-size:13px;line-height:1.6;max-width:88%';
+  bubble.textContent=text;
   d.appendChild(bubble);msgs.appendChild(d);
   msgs.scrollTop=msgs.scrollHeight;
   chatHistory.push({role:'user',text});
+}
+function addTyping(){
+  const msgs=document.getElementById('chatmsgs');
+  const d=document.createElement('div');
+  d.id='typingInd';d.style.cssText='display:flex;gap:9px;align-items:flex-start;animation:fup .25s ease both';
+  const av2=document.createElement('div');
+  av2.style.cssText='width:30px;height:30px;border-radius:50%;background:var(--pul);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0';
+  av2.textContent='🤖';
+  const bubble=document.createElement('div');
+  bubble.style.cssText='background:var(--bg);border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:11px 15px;display:flex;gap:4px;align-items:center';
+  for(let i=0;i<3;i++){const dot=document.createElement('div');dot.style.cssText=`width:5px;height:5px;border-radius:50%;background:var(--muted);animation:tbd .85s ${i*.15}s infinite`;bubble.appendChild(dot);}
+  d.appendChild(av2);d.appendChild(bubble);msgs.appendChild(d);
+  msgs.scrollTop=msgs.scrollHeight;return d;
 }
 function sendChat(){
   const inp=document.getElementById('chatinput');
   const text=inp.value.trim();
   if(!text)return;
   addUserMsg(text);inp.value='';
+  document.getElementById('chatSugg').innerHTML='';
+  const typing=addTyping();
   setTimeout(()=>{
+    typing.remove();
     const lower=text.toLowerCase();
     let best=null;let bestScore=0;
-    for(const entry of chatKnowledge){
+    for(const entry of chatKB){
       const score=entry.k.filter(k=>lower.includes(k)).length;
       if(score>bestScore){bestScore=score;best=entry;}
     }
     if(best&&bestScore>0){
-      addBotMsg(best.a,best.cta);
+      const response=best.fn(text);
+      addBotMsg(response,best.cta);
     } else {
-      addBotMsg("Great question! That's something I'd love to walk you through on a demo call where I can show you exactly how it works for your specific practice.",true);
+      addBotMsg("That's a great question — and it's something I'd love to walk through with you properly on a live demo call where I can show you exactly how it works for your specific practice. Want to request a call now?",true);
     }
-  },600);
+    suggRound=(suggRound+1)%chatSuggestions.length;
+    setTimeout(()=>showSuggestions(chatSuggestions[suggRound]),400);
+  },900+Math.random()*400);
 }
 
 // ── ADMIN — logo click trigger + hashed password + rate limit ──
@@ -1340,8 +1452,8 @@ function renderAd(){
   document.getElementById('adI').value=av.interval;
   updatePrev();
   const ab=document.getElementById('adBks');
-  if(!bks.length){ab.innerHTML='<div class="adnt">No bookings yet. Share your demo link to get started!</div>';return;}
-  ab.innerHTML=bks.slice().reverse().map(b=>`<div class="adbk"><div class="adbkn">${_esc(b.fn)} ${_esc(b.ln)} — ${_esc(b.pr)}</div><div class="adbkd">${_esc(b.date)} at ${_esc(b.time)}<br>${_esc(b.em)}${b.ty?' · '+_esc(b.ty):''}</div></div>`).join('');
+  if(!bks.length){ab.innerHTML='<div class="adnt">No bookings yet. Share your demo link to get started!</div>';}
+  else{ab.innerHTML=bks.slice().reverse().map(b=>`<div class="adbk"><div class="adbkn">${_esc(b.fn)} ${_esc(b.ln)} — ${_esc(b.pr)}</div><div class="adbkd">${_esc(b.date)} at ${_esc(b.time)}<br>${_esc(b.em)}${b.ty?' · '+_esc(b.ty):''}</div></div>`).join('');}
 }
 function togDay(i){
   if(av.schedule[i]){delete av.schedule[i];}
